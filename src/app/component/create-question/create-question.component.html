@@ -1,0 +1,301 @@
+<div class="site-section bg-dark" id="courses-section">
+    <div class="container-fluid">
+        <div>
+
+            <!-- create question form starts -->
+            <form #questionForm="ngForm" (ngSubmit)="addQuestion(question,questionForm.valid,questionForm)">
+                <div class="jumbotron m-3 p-3">
+                    <h1>Question</h1>
+                    <small *ngIf="cbsError" id="emailHelp" class="form-text text-danger">*{{cbsError}}</small>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="fname">Select Class</label>
+
+                                <select class="form-control" id="classInformation"
+                                    [(ngModel)]="question.classInformation" (change)="getBoard($event)" name="classId"
+                                    #classId="ngModel" required>
+                                    <option *ngFor="let one of classList" [value]="one.classId">{{one.className}}
+                                    </option>
+                                </select>
+                                <small *ngIf="questionForm.submitted && classId.invalid" id="emailHelp"
+                                    class="form-text text-danger">*Please select class</small>
+
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="lname">Select Board</label>
+                                <select [(ngModel)]="question.boardInformation" name="boardId"
+                                    (change)="getSubjectForUpdate($event)" #boardId="ngModel" class="form-control">
+                                    <option *ngFor="let one of boardList" [value]="one.boardId">{{one.boardName}}
+                                    </option>
+                                </select>
+
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="fname">Select Subject</label>
+
+                                <select [(ngModel)]="question.subjectInformation" name="subjectId" #subjectId="ngModel"
+                                    class="form-control" required>
+                                    <option *ngFor="let one of subjectListForAddCourse" [value]="one.subjectId">
+                                        {{one.subjectName}}
+                                    </option>
+                                </select>
+                                <small *ngIf="questionForm.submitted && subjectId.invalid" id="emailHelp"
+                                    class="form-text text-danger">*Please select subject</small>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="lname">Enter Topic</label>
+                                <input [(ngModel)]="question.topicName" name="topicName" class="form-control"
+                                    type="text">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <label for="lname">Select Question type</label>
+                            <select [(ngModel)]="question.questionType" name="queType" #queType="ngModel" required
+                                class="form-control">
+                                <option *ngFor="let one of questionType" [value]="one">{{one}}
+                                </option>
+                            </select>
+                            <small *ngIf="questionForm.submitted && queType.invalid" id="emailHelp"
+                                class="form-text text-danger">*Please select question type</small>
+                        </div>
+                        <div class="col-md-6">
+                            <label for="lname">Select Difficulty level</label>
+                            <select [(ngModel)]="question.difficultyLevel" name="diffLevel" #diffLevel="ngModel"
+                                required class="form-control">
+                                <option *ngFor="let one of difficultyLevel" [value]="one">{{one}}</option>
+                            </select>
+                            <small *ngIf="questionForm.submitted && diffLevel.invalid" name="cbsError" id="emailHelp"
+                                class="form-text text-danger">*Please select difficulty level</small>
+                        </div>
+                    </div>
+                    <div class="row p-4">
+                        <div>
+                            <input [(ngModel)]="question.isImageAvailable" name="imgChk" type="checkbox"> Add image to
+                            question
+                        </div>
+                    </div>
+                    <div *ngIf="question.isImageAvailable" class="row p-4">
+                        <div class="row">
+                            <div class="col-sm-12">
+                                <button class="btn btn-primary" *ngIf="!addMoreImages"
+                                    onclick="document.getElementById('myFileInput1').click()">
+                                    Add Image
+                                </button>
+                                <!-- <button *ngIf="addMoreImages" class="btn btn-primary"
+                                    onclick="document.getElementById('myFileInput2').click()">
+                                    Add more images
+                                </button> -->
+                                <input style="opacity: 0;" type="file" id="myFileInput1" name="images"
+                                    placeholder="Select image for upload" (change)="selectImage($event)"
+                                    accept="image/*" multiple />
+                                    <!-- <input style="opacity: 0;" type="file" id="myFileInput2" name="images"
+                                    placeholder="Select image for upload" (change)="selectMoreImage($event)"
+                                    accept="image/*" multiple /> -->
+                                <!-- <input type="file" id="myFileInput" name="images" [(ngModel)]="uploadFilePath"
+                                placeholder="Select image for upload" accept="image/*"
+                                multiple /> -->
+
+                                <br>
+                                <div *ngFor="let one of selectedfile">
+                                    {{one.name}}
+                                    <button type="button" (click)="deleteImageFromQuestion(one.name)">Remove</button>
+                                    <br><br>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+
+
+
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                <label for="email">Question title</label>
+                                <textarea [(ngModel)]="question.question" name="questionTitle" #questionTitle="ngModel"
+                                    required class="form-control" placeholder="Enter question title"></textarea>
+                                <small *ngIf="questionForm.submitted && questionTitle.invalid" id="emailHelp"
+                                    class="form-text text-danger">*Please enter question title</small>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+
+                        <div class="col-xs-12 col-sm-8 col-md-3 col-lg-3">
+                            <label for="state">Time in seconds</label>
+                            <input [(ngModel)]="question.timeToSolve" name="timeToSolve" #timeToSolve="ngModel"
+                                id="state" class="form-control" min="0" type="number">
+
+                        </div>
+                        <div class="col-xs-12 col-sm-8 col-md-3 col-lg-3">
+                            <label for="state">Marks to allot</label>
+                            <input [(ngModel)]="question.maximumMarks" name="maximumMarks" id="state"
+                                #maximumMarks="ngModel" class="form-control" min="0" type="number">
+
+                        </div>
+                        <div *ngIf="question.questionType == 'subjective'" class="col-xs-12 col-sm-8 col-md-3 col-lg-3">
+                            <label for="state">Character limit</label>
+                            <input [(ngModel)]="question.maximumMarks" name="charLimit" id="state" #charLimit="ngModel"
+                                required class="form-control" min="0" type="number">
+                            <small *ngIf="questionForm.submitted && charLimit.invalid" id="emailHelp"
+                                class="form-text text-danger">*Please
+                                enter characterLimit</small>
+                        </div>
+                    </div>
+
+                    <hr>
+
+                    <h1>Options</h1>
+                    <div *ngIf="question.questionType == 'mcq'">
+                        <h2>Multiple Choice Question</h2>
+                        <table id="optionTable" class="table">
+                            <thead>
+                                <tr>
+                                    <th>
+                                        Option
+                                    </th>
+                                    <th>
+                                        Correct
+                                    </th>
+                                    <th>
+                                        Option text
+                                    </th>
+                                    <th>
+                                        Action
+                                    </th>
+
+                                </tr>
+                            </thead>
+                            <tbody>
+
+                                <tr *ngFor="let one of options;let i=index;">
+                                    <!-- <td>{{i}}</td> -->
+                                    <td>
+                                        <input [(ngModel)]="one.isCorrectAnswer" name="mcq{{one.id}}" type="checkbox">
+                                    </td>
+                                    <td>
+                                        <input [(ngModel)]="one.optionName" name="mcq{{one.id}}" type="text">
+                                    </td>
+                                    <td>
+                                        <button class="delete-row btn btn-primary" type="button"
+                                            (click)="removeRow(one.id)">Remove</button>
+                                    </td>
+                                </tr>
+                            </tbody>
+
+                        </table>
+                        <button class="add-row btn btn-primary" type="button" (click)="addRow()">Add
+                            row</button>
+
+
+                    </div>
+
+
+                    <div *ngIf="question.questionType == 'single select'">
+                        <h2>Single select</h2>
+                        <table id="optionTable" class="table">
+                            <thead>
+                                <tr>
+                                    <!-- <th>
+                                            Option
+                                        </th> -->
+                                    <th>
+                                        Correct
+                                    </th>
+                                    <th>
+                                        Option text
+                                    </th>
+                                    <th>
+                                        Action
+                                    </th>
+
+                                </tr>
+                            </thead>
+                            <tbody>
+
+                                <tr *ngFor="let one of options;let i=index;">
+                                    <!-- <td>{{i + 1}}</td> -->
+                                    <td>
+                                        <input [(ngModel)]="one.isCorrectAnswer" (change)="toggleOptions(one)"
+                                            name="single{{one.id}}" type="radio">
+                                    </td>
+                                    <td>
+                                        <input [(ngModel)]="one.optionName" name="singleText{{one.id}}" type="text">
+                                    </td>
+                                    <td>
+                                        <button class="delete-row btn btn-primary" type="button"
+                                            (click)="removeRow(one.id)">Remove</button>
+                                    </td>
+                                </tr>
+                            </tbody>
+
+                        </table>
+                        <button class="add-row btn btn-primary" type="button" (click)="addRow()">Add
+                            row</button>
+                    </div>
+
+                    <div *ngIf="question.questionType == 'tof'">
+                        <h2>True or False</h2>
+                        <table id="optionTable" class="table">
+                            <thead>
+                                <tr>
+                                    <!-- <th>
+                                        Option
+                                    </th> -->
+                                    <th>
+                                        Correct
+                                    </th>
+                                    <th>
+                                        Option text
+                                    </th>
+                                    <!-- <th>
+                                        Action
+                                    </th> -->
+
+                                </tr>
+                            </thead>
+                            <tbody>
+
+                                <tr *ngFor="let one of options;let i=index;">
+                                    <!-- <td>{{one.optionId}}</td> -->
+                                    <td>
+                                        <input id="one" [(ngModel)]="one.isCorrectAnswer" name="optCorrect{{i}}"
+                                            type="checkbox">
+                                    </td>
+                                    <td>
+                                        <input id="two" [(ngModel)]="one.optionName" name="optName{{i}}" type="text">
+                                    </td>
+                                    <!-- <td *ngIf="options.length > 2">
+                                        <button class="delete-row" (click)="removeRow(i)">Remove</button>
+                                    </td> -->
+                                </tr>
+                            </tbody>
+
+                        </table>
+
+                    </div>
+
+
+                    <div *ngIf="!cbsError" class="row">
+                        <button class="btn btn-primary form-control" [disabled]="isQuestionLoading" type="submit"> Add
+                            question</button>
+                    </div>
+
+
+                </div>
+            </form>
+            <!-- create question form ends -->
+        </div>
+    </div>
+</div>

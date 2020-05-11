@@ -1,0 +1,351 @@
+<div class="site-section bg-dark" id="courses-section">
+    <div class="container-fluid">
+
+        <div>
+            <div class="jumbotron p-3 m-3">
+
+                <!-- <div class="mt-3 mb-3">
+                    <h2>All Questions</h2>
+                    <div class="table-responsive">
+                        <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+                            <thead>
+                                <tr>
+                                    <th>No.</th>
+                                    <th>Title</th>
+                                    <th>Type</th>
+                                    <th>Class</th>
+                                    <th>Board</th>
+                                    <th>Subject</th>
+                                    <th>Diff. level</th>
+                                    <th>Marks</th>
+                                    <th>Time</th>
+                                    <th>Action</th>
+                                </tr>
+                            </thead>
+
+                            <tbody>
+                                <tr *ngFor="let one of allQuestions; let i=index">
+                                    <td>{{i + 1}}</td>
+                        
+                                    <td>{{one.question}}</td>
+                                    <td>{{one.questionType}}</td>
+                                    <td>{{one.classInfo.className}}</td>
+                                    <td>{{one.boardInfo.boardName}}</td>
+                                    <td>{{one.subjectInfo.subjectName}}</td>
+                               
+                                    <td>{{one.difficultyLevel}}</td>
+                                    <td>{{one.maximumMarks}}</td>
+                                    <td>{{one.timeToSolve}} Sec</td>
+                                    <td><button class="btn btn-primary" data-toggle="modal"
+                                            data-target="#updateQuestionModal"
+                                            (click)="getQuestionById(one)">Update</button></td>
+                                </tr>
+
+                            </tbody>
+                        </table>
+                    </div>
+                </div> -->
+
+                <!-- questions reusable component starts -->
+                <app-questions [questionList]="allQuestions" [filterData]="filterData"
+                    (checkedQuestionList)="checkedQuestionList($event)" (pageChanged)="pageChanged($event)"
+                    (imageUpdated)="imageUpdated($event)" (imageDeleted)="imageDeleted($event)"
+                    (questionUpdated)="questionUpdated($event)">
+                </app-questions>
+                <!-- questions reusable component ends -->
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- update question mode starts -->
+<div class="modal fade" id="updateQuestionModal">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+
+            <!-- Modal Header -->
+            <div class="modal-header">
+                <h4 class="modal-title">Update Question</h4>
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+            </div>
+
+            <!-- Modal body -->
+            <div class="modal-body">
+                <form #updateForm="ngForm" (ngSubmit)="updateQuestion(questionToUpdate,updateForm.valid,updateForm)">
+                    <div *ngIf="questionToUpdate" class="container">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label for="fname">Select Class</label>
+
+                                    <select [(ngModel)]="questionToUpdate.classInformation" name="classId"
+                                        #classId="ngModel" required class="form-control">
+                                        <option *ngFor="let one of dal.classList" [value]="one.classId">
+                                            {{one.className}}
+                                        </option>
+                                    </select>
+                                    <small *ngIf="updateForm.submitted && classId.invalid" id="emailHelp"
+                                        class="form-text text-danger">*Please select class</small>
+                                    <!-- <ng-multiselect-dropdown 
+                                    [placeholder]="'Select Class'"
+                                    [data]="classList"
+                                    [(ngModel)]="questionToUpdate.classInformation"
+                                    [settings]="dropdownClassSettings"
+                                    (onSelect)="onClassSelect($event)"
+                                 >
+                                </ng-multiselect-dropdown> -->
+
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label for="lname">Select Board</label>
+                                    <select [(ngModel)]="questionToUpdate.boardInformation" name="boardId"
+                                        #boardId="ngModel" required class="form-control">
+                                        <option *ngFor="let one of dal.boardList" [value]="one.boardId">
+                                            {{one.boardName}}
+                                        </option>
+                                    </select>
+                                    <small *ngIf="updateForm.submitted && boardId.invalid" id="emailHelp"
+                                        class="form-text text-danger">*Please select board</small>
+                                    <!-- <ng-multiselect-dropdown 
+                                [placeholder]="'Select Board'"
+                                [data]="boardList"
+                                [(ngModel)]="questionToUpdate.boardInformation"
+                                [settings]="dropdownBoardSettings"
+                                (onSelect)="onBoardSelect($event)"
+                                >
+                            </ng-multiselect-dropdown> -->
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label for="fname">Select Subject</label>
+
+                                    <select [(ngModel)]="questionToUpdate.subjectInformation" name="subjectId"
+                                        #subjectId="ngModel" required class="form-control">
+                                        <option *ngFor="let one of dal.subjectList" [value]="one.subjectId">
+                                            {{one.subjectName}}</option>
+                                    </select>
+                                    <small *ngIf="updateForm.submitted && subjectId.invalid" id="emailHelp"
+                                        class="form-text text-danger">*Please select subject</small>
+                                    <!-- <ng-multiselect-dropdown 
+                                [placeholder]="'Select Subject'"
+                                [data]="subjectList"
+                                [(ngModel)]="questionToUpdate.subjectInformation"
+                                [settings]="dropdownSubjectSettings"
+                                (onSelect)="onSubjectSelect($event)"
+                              >
+                            </ng-multiselect-dropdown> -->
+
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <label for="lname">Select Question type</label>
+                                <select disabled [(ngModel)]="questionToUpdate.questionType" name="queType"
+                                    #queType="ngModel" class="form-control">
+                                    <option *ngFor="let one of questionType" [value]="one">{{one}}</option>
+                                </select>
+                                <small *ngIf="updateForm.submitted && queType.invalid" id="emailHelp"
+                                    class="form-text text-danger">*Please select question type</small>
+                            </div>
+                            <div class="col-md-6">
+                                <label for="lname">Select Difficulty level</label>
+                                <select [(ngModel)]="questionToUpdate.difficultyLevel" name="difflevel"
+                                    #difflevel="ngModel" required class="form-control">
+                                    <option *ngFor="let one of difficultyLevel" [value]="one">{{one}}</option>
+                                </select>
+                                <small *ngIf="updateForm.submitted && difflevel.invalid" id="emailHelp"
+                                    class="form-text text-danger">*Please select difficulty level</small>
+                            </div>
+                        </div>
+                        <!-- <div class="row p-4">
+                        <div>
+                            <input [(ngModel)]="questionToUpdate.isImageAvailable" type="checkbox"> Image based question
+                        </div>
+                    </div> -->
+                        <!-- <div *ngIf="questionToUpdate.isImageAvailable" class="row p-4">
+                        <div>
+                            <input type="file" placeholder="select image for upload">
+                        </div>
+                    </div> -->
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="form-group">
+                                    <label for="email">Question title</label>
+                                    <textarea [(ngModel)]="questionToUpdate.question" class="form-control"
+                                        name="queTitle" #queTitle="ngModel" required
+                                        placeholder="Enter question title"></textarea>
+                                    <small *ngIf="updateForm.submitted && queTitle.invalid" id="emailHelp"
+                                        class="form-text text-danger">*Please enter question title</small>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+
+                            <div class="col-xs-12 col-sm-8 col-md-3 col-lg-3">
+                                <label for="state">Time to solve</label>
+                                <input [(ngModel)]="questionToUpdate.timeToSolve" id="state" name="timeToSolve"
+                                    #timeToSolve="ngModel" required class="form-control" type="number">
+                                <small *ngIf="updateForm.submitted && timeToSolve.invalid" id="emailHelp"
+                                    class="form-text text-danger">*Please enter time to solve questions</small>
+                            </div>
+                            <div class="col-xs-12 col-sm-8 col-md-3 col-lg-3">
+                                <label for="state">Marks to allot</label>
+                                <input [(ngModel)]="questionToUpdate.maximumMarks" id="state" name="maxMarks"
+                                    #maxMarks="ngModel" required class="form-control" type="number">
+                                <small *ngIf="updateForm.submitted && maxMarks.invalid" id="emailHelp"
+                                    class="form-text text-danger">*Please enter marks</small>
+                            </div>
+                        </div>
+
+                        <hr>
+
+                        <h1>Answer</h1>
+                        <div *ngIf="questionToUpdate.questionType == 'mcq'">
+                            <h2>MCQ</h2>
+                            <table id="optionTable" class="table">
+                                <thead>
+                                    <tr>
+                                        <th>
+                                            Option
+                                        </th>
+                                        <th>
+                                            Correct
+                                        </th>
+                                        <th>
+                                            Option text
+                                        </th>
+                                        <th>
+                                            Action
+                                        </th>
+
+                                    </tr>
+                                </thead>
+                                <tbody>
+
+                                    <tr *ngFor="let one of questionToUpdate.options;let i=index;">
+                                        <td>{{i + 1}}</td>
+                                        <td>
+                                            <input [(ngModel)]="one.isCorrectAnswer" name="optCorrect" type="checkbox">
+                                        </td>
+                                        <td>
+                                            <input [(ngModel)]="one.optionName" name="optName" type="text">
+                                        </td>
+                                        <!-- <td *ngIf="options.length > 2">
+                                        <button class="delete-row" (click)="removeRow(i)">Remove</button>
+                                    </td> -->
+                                    </tr>
+                                </tbody>
+
+                            </table>
+                            <!-- <button class="add-row" (click)="addRow()">Add row</button> -->
+                        </div>
+
+
+                        <div *ngIf="questionToUpdate.questionType == 'tof'">
+                            <h2>True or False</h2>
+                            <table id="optionTable" class="table">
+                                <thead>
+                                    <tr>
+                                        <th>
+                                            Option
+                                        </th>
+                                        <th>
+                                            Correct
+                                        </th>
+                                        <th>
+                                            Option text
+                                        </th>
+                                        <!-- <th>
+                                        Action
+                                    </th> -->
+
+                                    </tr>
+                                </thead>
+                                <tbody>
+
+                                    <tr *ngFor="let one of questionToUpdate.options;let i=index;">
+                                        <td>{{i + 1}}</td>
+                                        <td>
+                                            <input id="one" [(ngModel)]="one.isCorrectAnswer" name="optCorrect"
+                                                type="checkbox">
+                                        </td>
+                                        <td>
+                                            <input id="two" [(ngModel)]="one.optionName" name="optName" type="text">
+                                        </td>
+                                        <!-- <td *ngIf="options.length > 2">
+                                        <button class="delete-row" (click)="removeRow(i)">Remove</button>
+                                    </td> -->
+                                    </tr>
+                                </tbody>
+
+                            </table>
+
+                        </div>
+
+                        <div *ngIf="questionToUpdate.questionType == 'match'">
+                            <h2>Match the pair</h2>
+
+                            <table id="optionTable" class="table">
+                                <thead>
+                                    <tr>
+                                        <th>
+                                            Option
+                                        </th>
+                                        <th>
+                                            Option text
+                                        </th>
+                                        <th>
+                                            Option match
+                                        </th>
+                                        <!-- <th>
+                                        Action
+                                    </th> -->
+
+                                    </tr>
+                                </thead>
+                                <tbody>
+
+                                    <tr *ngFor="let one of questionToUpdate.options;let i=index;">
+                                        <td>{{i +1 }}</td>
+                                        <td>
+                                            <input id="one" [(ngModel)]="one.optionName" name="optName" type="text">
+                                        </td>
+                                        <td>
+                                            <input id="two" [(ngModel)]="one.isCorrectAnswer" name="optCorrect" required
+                                                type="text">
+                                        </td>
+                                        <!-- <td *ngIf="options.length > 2">
+                                        <button class="delete-row" (click)="removeRow(i)">Remove</button>
+                                    </td> -->
+                                    </tr>
+                                </tbody>
+
+                            </table>
+                            <!-- <button class="add-row" (click)="addPairRow()">Add row</button> -->
+                        </div>
+
+                        <div class="row">
+                            <button class="btn btn-primary form-control" name="submit" type="submit"> Update
+                                question</button>
+                        </div>
+
+
+                    </div>
+                </form>
+            </div>
+
+            <!-- Modal footer -->
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+            </div>
+
+        </div>
+    </div>
+</div>
+<!-- update question mode ends -->

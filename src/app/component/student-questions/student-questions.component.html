@@ -1,0 +1,49 @@
+<div class="site-section" id="courses-section">
+    <div class="container-fluid">
+        <div class="jumbotron">
+            <h1>My questions</h1>
+
+            <!-- student question list starts -->
+            <ul>
+                <li *ngFor="let one of studentQuestionSets">
+                    <br>
+
+                    <div class="card mb-3">
+                        <div class="card-header">
+                            <i class="fa fa-table"></i> Question paper id : {{one.questionPaperSetId}}</div>
+                        <div class="card-body">
+                            <div class="table-responsive">
+                                <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+                                    <thead>
+                                        <tr>
+                                            <th>Question</th>
+                                            <th>Type</th>
+                                            <th>Difficulty Level</th>
+                                            <th>Marks</th>
+                                            <th>Time</th>
+
+                                        </tr>
+                                    </thead>
+
+                                    <tbody>
+                                        <tr *ngFor="let a of one.questions">
+                                            <td>{{a.questions.question}}</td>
+                                            <td>{{a.questions.questionType}}</td>
+                                            <td>{{a.questions.difficultyLevel}}</td>
+                                            <td>{{a.questions.maximumMarks}}</td>
+                                            <td>{{a.questions.timeToSolve}}</td>
+                                        </tr>
+
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                        <!-- <div class="card-footer small text-muted">Updated yesterday at 11:59 PM</div> -->
+                    </div>
+                </li>
+            </ul>
+            <!-- student question list ends -->
+        </div>
+    </div>
+
+</div>

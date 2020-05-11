@@ -1,0 +1,121 @@
+<div class="intro-section" id="home-section">
+
+    <div class="slide-1" style="background-image: url('assets/images/hero_1.jpg');" data-stellar-background-ratio="0.5">
+        <div class="container">
+            <div class="row align-items-center">
+                <div class="col-12">
+                    <div class="row align-items-center">
+                        <div class="col-lg-6 mb-4">
+                            <h1 data-aos="fade-up" data-aos-delay="100">Groom your knowledge with LearningPod</h1>
+                            <p class="mb-4" data-aos="fade-up" data-aos-delay="200">LearningPod provides online tests
+                                with wide varity of questions papers by best teachers.</p>
+                            <p data-aos="fade-up" data-aos-delay="300"><a
+                                    class="btn btn-primary py-3 px-5 btn-pill">Admission Now</a></p>
+
+                        </div>
+
+                        <!-- login form starts -->
+                        <div class="col-lg-5 ml-auto" data-aos="fade-up" data-aos-delay="500">
+                            <form #loginForm="ngForm" class="form-box"
+                                (ngSubmit)="login(user,loginForm.valid,loginForm)">
+                                <h3 class="h4 text-black mb-4">LogIn</h3>
+                                <div class="form-group">
+                                    <select class="form-control" [(ngModel)]="user.role" required id="loginUserRole"
+                                        name="userRole" #userRole="ngModel">
+                                        <option [ngValue]="undefined" disabled selected>--Select Role--</option>
+                                        <option value="cc">Coaching Class Admin</option>
+                                        <option value="student">Student</option>
+                                    </select>
+                                    <small *ngIf="loginForm.submitted && userRole.invalid" id="emailHelp"
+                                        class="form-text text-danger">*Please select
+                                        role</small>
+                                </div>
+
+                                <div class="form-group">
+                                    <input type="number" name="userName" [(ngModel)]="user.userName" #userName="ngModel"
+                                        required class="form-control" placeholder="Username">
+                                    <small *ngIf="loginForm.submitted && userName.invalid" id="emailHelp"
+                                        class="form-text text-danger">*Please enter username</small>
+                                </div>
+                                <div class="form-group">
+                                    <input type="password" name="userPass" [(ngModel)]="user.userPass"
+                                        #userPass="ngModel" required class="form-control" placeholder="Password">
+                                    <small *ngIf="loginForm.submitted && userPass.invalid" id="emailHelp"
+                                        class="form-text text-danger">*Please enter password</small>
+                                </div>
+
+                                <div class="form-group">
+                                    <input type="submit" class="btn btn-primary btn-pill" value="Log In">
+                                </div>
+                            </form>
+                        </div>
+                        <!-- login form ends -->
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+<footer class=" bg-white">
+    <div class="container">
+        <!-- <div class="row">
+            <div class="col-md-4">
+                <h3>About LearningPod</h3>
+                <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Porro consectetur ut hic ipsum et veritatis
+                    corrupti. Itaque eius soluta optio dolorum temporibus in, atque, quos fugit sunt sit quaerat dicta.
+                </p>
+            </div>
+
+            <div class="col-md-3 ml-auto">
+                <h3>Links</h3>
+                <ul class="list-unstyled footer-links">
+                    <li><a>Home</a></li>
+                    <li><a>Courses</a></li>
+                    <li><a>Programs</a></li>
+                    <li><a>Teachers</a></li>
+                </ul>
+            </div>
+
+            <div class="col-md-4">
+                <h3>Subscribe</h3>
+                <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Nesciunt incidunt iure iusto architecto?
+                    Numquam, natus?</p>
+                <form action="#" class="footer-subscribe">
+                    <div class="d-flex mb-5">
+                        <input type="text" class="form-control rounded-0" placeholder="Email">
+                        <input type="submit" class="btn btn-primary rounded-0" value="Subscribe">
+                    </div>
+                </form>
+            </div>
+
+        </div> -->
+
+        <div class="row text-center">
+            <div class="col-md-12">
+                <div class="border-top pt-3">
+                    <p>
+                        <!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. -->
+                        Copyright &copy;
+                        <script>
+                            document.write(new Date().getFullYear());
+                        </script> All rights reserved | This app is made with <i class="icon-heart"
+                            aria-hidden="true"></i> by <a href="https://coffeebeanstechnologies.com"
+                            target="_blank">Coffeebeans Technologies</a>
+                        <!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. -->
+                    </p>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</footer>
+
+
+
+
+<!-- .site-wrap -->

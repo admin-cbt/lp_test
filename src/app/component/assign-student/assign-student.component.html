@@ -1,0 +1,89 @@
+<div class="site-section bg-dark" id="courses-section">
+    <div class="container-fluid">
+        <div>
+            <div class="jumbotron m-3 p-3">
+                <h1>Assign Question paper to students </h1>
+
+                <!-- select question paper start -->
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="form-group">
+                            <label for="fname">Select question paper set</label>
+
+                            <select [(ngModel)]="questionPaperSetId" (change)="sortStudents($event)"
+                                class="form-control">
+                                <option *ngFor="let one of allQuestionSets " [value]="one.questionPaperSetId">
+                                    {{one.setName}}</option>
+                            </select>
+                            <small *ngIf="questionSetError" id="emailHelp" class="form-text text-danger">*Please select
+                                question paper set</small>
+                        </div>
+                    </div>
+                </div>
+                <!-- select question paper end -->
+                <hr>
+
+                <!-- select students start -->
+                <h2>All Students</h2>
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="content1">
+                            <div class="search">
+
+                                <input id="unenrolledInput" [(ngModel)]="unenrolledInput" (keyup)="searchUnassigned()"
+                                    placeholder="Search" name="search">
+                                <!-- <span>&#9906</span> -->
+                            </div>
+                            <ul id="unenrolledUL" style="border: solid 1px black;
+            padding: 0; overflow-y: scroll; height: 390px;">
+
+                                <li id="unenrolledInputLi" *ngFor="let one of unassignedStudents">
+                                    <div class="option1">
+                                        <input type="checkbox" name="optionUnenrolled" [id]="one.studentId"
+                                            [value]="one.studentId">
+                                        <label [for]="one.studentId">{{one.studentName}}</label>
+                                    </div>
+                                </li>
+
+                            </ul>
+                            <div>
+                                <button (click)="assign(questionPaperSetId)" [disabled]="isEnrollPending"
+                                    class="btn btn-primary">Assign</button>
+                                <b class="warning">{{enrollErrorMessage}}</b>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="content1">
+                            <div class="search">
+                                <input id="enrolledInput" [(ngModel)]="enrolledInput" (keyup)="searchAssigned()"
+                                    placeholder="Search">
+                                <!-- <span>&#9906</span> -->
+                            </div>
+                            <ul id="enrolledUL" style="border: solid 1px black;
+            padding: 0; overflow-y: scroll; height: 390px;">
+
+                                <li *ngFor="let one of assignedStudents">
+                                    <div class="option1">
+                                        <input type="checkbox" name="optionEnrolled" [id]="one.studentId"
+                                            [value]="one.studentId">
+                                        <label [for]="one.studentId">{{one.studentName}}</label>
+                                    </div>
+                                </li>
+
+                            </ul>
+                            <!-- <div>
+                                <button (click)="unEnrollStudent()" [disabled]="isUnenrollPending"
+                                    class="btn btn-primary">Un assign</button> <b
+                                    class="warning">{{unEnrollErrorMessage}}</b>
+                            </div> -->
+                        </div>
+                    </div>
+                </div>
+
+                <!-- select students ends -->
+
+            </div>
+        </div>
+    </div>
+</div>

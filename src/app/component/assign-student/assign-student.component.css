@@ -1,0 +1,243 @@
+th {
+    border-width: 1px;
+    padding: 0.5em;
+    position: relative;
+    text-align: left;
+    background: #eee;
+    border-color: #bbb;
+    border-radius: 0.25em;
+    border-style: solid;
+}
+
+td {
+    border-width: 1px;
+    padding: 0.5em;
+    position: relative;
+    text-align: left;
+    border-color: #ddd;
+    border-radius: 0.25em;
+    border-style: solid;
+}
+
+#ck-button {
+    margin: 4px;
+    background-color: #EFEFEF;
+    border-radius: 4px;
+    border: 1px solid #D0D0D0;
+    overflow: auto;
+    float: left;
+}
+
+#ck-button:hover {
+    background: red;
+}
+
+#ck-button label {
+    float: left;
+    width: 4.0em;
+}
+
+#ck-button label span {
+    text-align: center;
+    padding: 3px 0px;
+    display: block;
+}
+
+#ck-button label input {
+    position: absolute;
+    top: -20px;
+}
+
+#ck-button input:checked+span {
+    background-color: #911;
+    color: #fff;
+}
+
+.checkbox {
+    height: 0;
+}
+
+b {
+    font-weight: 600;
+}
+
+::-webkit-scrollbar {
+    -webkit-appearance: none;
+    width: 7px;
+}
+
+::-webkit-scrollbar-thumb {
+    border-radius: 4px;
+    background-color: rgba(0, 0, 0, .5);
+    -webkit-box-shadow: 0 0 1px rgba(255, 255, 255, .5);
+}
+
+.scrollableTable {
+    overflow-x: auto;
+}
+
+a {
+    cursor: pointer;
+}
+
+.activePayment {
+    color: #7971ea;
+    font-weight: 700;
+}
+
+#scrollDivCourse {
+    scroll-behavior: smooth;
+}
+
+#scrollBtnCourse {
+    position: fixed;
+    bottom: 30px;
+    right: 20px;
+    cursor: pointer;
+    background: rgba(85, 77, 201, 0.7);
+    width: 50px;
+    height: 50px;
+    z-index: 100;
+    display: block;
+    text-decoration: none;
+    -webkit-border-radius: 35px;
+    -moz-border-radius: 35px;
+    border-radius: 35px;
+    display: none;
+    -webkit-transition: all 0.3s linear;
+    -moz-transition: all 0.3s ease;
+    -ms-transition: all 0.3s ease;
+    -o-transition: all 0.3s ease;
+    transition: all 0.3s ease;
+}
+
+#scrollBtnCourse i {
+    cursor: pointer;
+    color: #fff;
+    margin: 0;
+    position: relative;
+    left: 16px;
+    top: 13px;
+    font-size: 19px;
+    -webkit-transition: all 0.3s ease;
+    -moz-transition: all 0.3s ease;
+    -ms-transition: all 0.3s ease;
+    -o-transition: all 0.3s ease;
+    transition: all 0.3s ease;
+}
+
+#scrollBtnCourse:hover {
+    cursor: pointer;
+    background: rgba(85, 77, 201, 0.9);
+}
+
+#scrollBtnCourse:hover i {
+    color: #fff;
+    top: 5px;
+}
+
+.activePayment {
+    color: #7971ea;
+    font-weight: 700;
+}
+
+.good-review-score {
+    background-color: #66CC33;
+    color: white;
+    text-align: center;
+    padding: 10px;
+    margin-right: 5px
+    /*width: 50px;
+    height: 30px; 
+    line-height: 30px*/
+}
+
+.container1 {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100vw;
+    height: 100vh;
+}
+
+.content1 {
+    padding: 1rem;
+}
+
+.content1 ul li {
+    list-style: none;
+    line-height: 1.5;
+}
+
+.content1 ul li:first-child {
+    margin-bottom: 0.5rem;
+}
+
+.search {
+    position: relative;
+}
+
+.search input {
+    width: 100%;
+    padding: 0.75rem 0.5rem 0.75rem 1.75rem;
+    border: 1px solid #cdc;
+    border-radius: 0.25rem;
+}
+
+.search span {
+    font-size: 1.5em;
+    position: absolute;
+    transform: rotate(-45deg);
+    left: 10px;
+    top: 4px;
+}
+
+.option1 {
+    position: relative;
+}
+
+.content1 label {
+    display: block;
+    padding: 0.5rem;
+    text-decoration: none;
+    color: #252829;
+    border-radius: 0.25rem;
+    cursor: pointer;
+}
+
+.content1 label:hover {
+    background-color: rgba(0, 0, 0, 0.1);
+}
+
+.content1 input[type="checkbox"] {
+    display: none;
+}
+
+.content1 input[type="checkbox"]:checked+label {
+    cursor: default;
+}
+
+.content1 input[type="checkbox"]:checked+label:after {
+    content: "\2714";
+    position: absolute;
+    right: 0.5rem;
+}
+
+.disabledbutton {
+    pointer-events: none;
+    opacity: 0.4;
+}
+
+hr {
+    border-top: 2px solid grey;
+}
+
+.warning {
+    color: #ffb160;
+    font-weight: 700;
+}
+
+.tags {
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19) !important;
+    padding: 10px !important;
+}

@@ -1,0 +1,321 @@
+<div class="site-section bg-dark" id="courses-section">
+    <div class="container-fluid">
+        <div class="jumbotron">
+
+            <!-- question set form starts -->
+
+            <form #setForm="ngForm"
+                (ngSubmit)="addQuestionSet(questionSetToAdd,setForm.valid,setForm, selectedQuestions)">
+
+
+                <div class=" m-3 p-3">
+                    <h1>Create question paper</h1>
+                    <small *ngIf="cbsError" id="emailHelp" class="form-text text-danger">*{{cbsError}}</small>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                <label for="email">Question set title</label>
+                                <textarea [(ngModel)]="questionSetToAdd.setName" name="setName" #setName="ngModel"
+                                    required class="form-control" placeholder="Enter question set title"></textarea>
+                                <small *ngIf="setForm.submitted && setName.invalid" id="emailHelp"
+                                    class="form-text text-danger">*Please enter set name</small>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label for="fname">Select Class</label>
+
+                                <select [(ngModel)]="questionSetToAdd.classInformation" (change)="getBoard($event)"
+                                    name="classId" #classId="ngModel" required class="form-control">
+                                    <option *ngFor="let one of classList" [value]="one.classId">{{one.className}}
+                                    </option>
+                                </select>
+                                <small *ngIf="setForm.submitted && classId.invalid" id="emailHelp"
+                                    class="form-text text-danger">*Please select class</small>
+                                <!-- <ng-multiselect-dropdown 
+                                [placeholder]="'Select Class'"
+                                [data]="classList"
+                                [(ngModel)]="question.classInformation"
+                                [settings]="dropdownClassSettings"
+                                (onSelect)="onItemSelect($event)"
+                                (onSelectAll)="onSelectAll($event)">
+                            </ng-multiselect-dropdown> -->
+
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label for="lname">Select Board</label>
+                                <select [(ngModel)]="questionSetToAdd.boardInformation"
+                                    (change)="getSubjectForUpdate($event)" name="boardId" #boardId="ngModel" required
+                                    class="form-control">
+                                    <option *ngFor="let one of boardList" [value]="one.boardId">{{one.boardName}}
+                                    </option>
+                                </select>
+                                <small *ngIf="setForm.submitted && boardId.invalid" id="emailHelp"
+                                    class="form-text text-danger">*Please select board</small>
+                                <!-- <ng-multiselect-dropdown 
+                            [placeholder]="'Select Board'"
+                            [data]="boardList"
+                            [(ngModel)]="question.boardInformation"
+                            [settings]="dropdownBoardSettings"
+                            (onSelect)="onItemSelect($event)"
+                            (onSelectAll)="onSelectAll($event)">
+                        </ng-multiselect-dropdown> -->
+                            </div>
+                        </div>
+
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label for="fname">Select Subject</label>
+
+                                <select [(ngModel)]="questionSetToAdd.subjectInformation" name="subjectId"
+                                    #subjectId="ngModel" required class="form-control">
+                                    <option *ngFor="let one of subjectListForAddCourse" [value]="one.subjectId">
+                                        {{one.subjectName}}
+                                    </option>
+                                </select>
+                                <small *ngIf="setForm.submitted && subjectId.invalid" id="emailHelp"
+                                    class="form-text text-danger">*Please select Subject</small>
+                            </div>
+                        </div>
+
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-4">
+                            <label for="state">Time in minutes</label>
+                            <input [(ngModel)]="questionSetToAdd.paperTime" name="timeInSeconds"
+                                #timeInSeconds="ngModel" required id="state" class="form-control" min="0" type="number">
+                            <small *ngIf="setForm.submitted && timeInSeconds.invalid" id="emailHelp"
+                                class="form-text text-danger">*Please enter paper time</small>
+                        </div>
+                        <div class="col-md-4">
+                            <label for="state">Marks to allot</label>
+                            <input [(ngModel)]="questionSetToAdd.totalMark" id="state" name="totalMarks"
+                                #totalMarks="ngModel" required class="form-control" min="0" type="number">
+                            <small *ngIf="setForm.submitted && totalMarks.invalid" id="emailHelp"
+                                class="form-text text-danger">*Please total marks</small>
+                        </div>
+                    </div>
+
+                    <app-questions [questionList]="questionSetToAdd.questions" [filterData]="filterData"
+                        (checkedQuestionList)="checkedQuestionList($event)"></app-questions>
+
+
+                    <div *ngIf="selectedQuestions" class="mt-3 mb-3">
+                        <h2>Selected questions</h2>
+                        <small *ngIf="questionError" id="emailHelp" class="form-text text-danger">*Please select
+                            questions</small>
+                        <table class="table">
+                            <tr>
+                                <!-- <th>
+                                    select
+                                </th> -->
+                                <th>
+                                    No.
+                                </th>
+                                <!-- <th>
+                                Id
+                            </th> -->
+                                <th>
+                                    Title
+                                </th>
+                                <th>
+                                    Type
+                                </th>
+                                <th>
+                                    Class
+                                </th>
+                                <th>
+                                    Board
+                                </th>
+                                <th>
+                                    Subject
+                                </th>
+                                <!-- <th>
+                                Topic id
+                            </th> -->
+                                <th>
+                                    Difficulty level
+                                </th>
+                                <th>
+                                    Marks alloted
+                                </th>
+                                <th>
+                                    Time to solve
+                                </th>
+
+
+                            </tr>
+
+                            <tr *ngFor="let one of selectedQuestions; let i=index">
+                                <!-- <td>
+                                   
+                                    <input type="checkbox" name="chk" [(ngModel)]="one.isChecked" />
+                                </td> -->
+                                <td>{{i + 1}}</td>
+                                <!-- <td>{{one.examId}}</td> -->
+                                <td>{{one.question}}</td>
+                                <td>{{one.questionType}}</td>
+                                <td>{{one.classInfo.className}}</td>
+                                <td>{{one.boardInfo.boardName}}</td>
+                                <td>{{one.subjectInfo.subjectName}}</td>
+                                <!-- <td>{{one.topicId}}</td> -->
+                                <td>{{one.difficultyLevel}}</td>
+                                <td>{{one.maximumMarks}}</td>
+                                <td>{{one.timeToSolve}} Sec</td>
+
+                            </tr>
+
+                        </table>
+
+
+                    </div>
+
+
+
+
+                    <div *ngIf="selectedQuestions && !cbsError" class="row pt-3">
+                        <div class="col-md-12">
+                            <button class="btn btn-primary form-control" type="submit"> Add question paper</button>
+                        </div>
+
+                    </div>
+
+
+
+                </div>
+
+            </form>
+            <!-- question set form ends -->
+
+
+        </div>
+    </div>
+</div>
+
+<!-- update set model starts -->
+
+<div class="modal fade" id="updateSetModal">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+
+
+            <div class="modal-header">
+                <h4 class="modal-title">Update Question paper</h4>
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+            </div>
+
+
+            <div class="modal-body">
+                <form #setUpdateForm="ngForm"
+                    (ngSubmit)="updateQuestionSet(setToUpdate,setUpdateForm.valid,setUpdateForm)">
+
+
+                    <div *ngIf="setToUpdate">
+
+
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="form-group">
+                                    <label for="email">Question paper title</label>
+                                    <textarea [(ngModel)]="setToUpdate.setName" name="setName" #setName="ngModel"
+                                        required class="form-control"
+                                        placeholder="Enter question paper title"></textarea>
+                                    <small *ngIf="setUpdateForm.submitted && setName.invalid" id="emailHelp"
+                                        class="form-text text-danger">*Please enter question paper name</small>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label for="fname">Select Class</label>
+
+                                    <select [(ngModel)]="setToUpdate.classInformation" (change)="getBoard($event)"
+                                        name="classId" #classId="ngModel" required class="form-control">
+                                        <option *ngFor="let one of dal.classList" [value]="one.classId">
+                                            {{one.className}}
+                                        </option>
+                                    </select>
+                                    <small *ngIf="setUpdateForm.submitted && classId.invalid" id="emailHelp"
+                                        class="form-text text-danger">*Please select class</small>
+
+
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label for="lname">Select Board</label>
+                                    <select [(ngModel)]="setToUpdate.boardInformation"
+                                        (change)="getSubjectForUpdate($event)" name="boardId" #boardId="ngModel"
+                                        required class="form-control">
+                                        <option *ngFor="let one of boardList" [value]="one.boardId">{{one.boardName}}
+                                        </option>
+                                    </select>
+                                    <small *ngIf="setUpdateForm.submitted && boardId.invalid" id="emailHelp"
+                                        class="form-text text-danger">*Please select board</small>
+
+                                </div>
+                            </div>
+
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label for="fname">Select Subject</label>
+
+                                    <select [(ngModel)]="setToUpdate.subjectInformation" name="subjectId"
+                                        #subjectId="ngModel" required class="form-control">
+                                        <option *ngFor="let one of subjectListForAddCourse" [value]="one.subjectId">
+                                            {{one.subjectName}}</option>
+                                    </select>
+                                    <small *ngIf="setUpdateForm.submitted && subjectId.invalid" id="emailHelp"
+                                        class="form-text text-danger">*Please select Subject</small>
+                                </div>
+                            </div>
+
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-4">
+                                <label for="state">Time in seconds</label>
+                                <input [(ngModel)]="setToUpdate.paperTime" name="timeInSeconds" #timeInSeconds="ngModel"
+                                    required id="state" class="form-control" min="0" type="number">
+                                <small *ngIf="setUpdateForm.submitted && timeInSeconds.invalid" id="emailHelp"
+                                    class="form-text text-danger">*Please enter paper time</small>
+                            </div>
+                            <div class="col-md-4">
+                                <label for="state">Marks to allot</label>
+                                <input [(ngModel)]="setToUpdate.totalMark" id="state" name="totalMarks"
+                                    #totalMarks="ngModel" required class="form-control" min="0" type="number">
+                                <small *ngIf="setUpdateForm.submitted && totalMarks.invalid" id="emailHelp"
+                                    class="form-text text-danger">*Please total marks</small>
+                            </div>
+                        </div>
+
+                        <div class="row pt-3">
+                            <div class="col-md-12">
+                                <button class="btn btn-primary form-control" type="submit"> Update question
+                                    paper</button>
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                </form>
+            </div>
+
+
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+            </div>
+
+        </div>
+    </div>
+</div>
+<!-- update set model ends -->

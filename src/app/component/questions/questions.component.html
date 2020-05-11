@@ -1,0 +1,364 @@
+<div class="container-fluid">
+    <hr>
+    <h2>All Questions</h2>
+
+    <div class="row pt-3 m-3" style="height: 500px;">
+        <!-- filter starts -->
+        <div class="col-md-2" style="height:100%;overflow-y: scroll;">
+            <h3>Filters &nbsp; <button class="btn-primary btn-sm" type="button"
+                    (click)="filterQuestions(classForFilter,subjectForFilter,diffLevelForFilter,queTypeForFilter,marksForFilter)">Apply</button><button
+                    class="btn-primary btn-sm" type="button" (click)="clearFilter()">Clear</button>
+            </h3>
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="form-group">
+                        <label for="fname">Class</label>
+
+                        <select [(ngModel)]="classForFilter" class="form-control">
+                            <option *ngFor="let one of dal.classList" [value]="one.classId">
+                                {{one.className}}
+                            </option>
+                        </select>
+                        <small *ngIf="questionSetError" id="emailHelp" class="form-text text-danger">*Please select
+                            question paper</small>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="form-group">
+                        <label for="fname">Subject</label>
+
+                        <select [(ngModel)]="subjectForFilter" class="form-control">
+                            <option *ngFor="let one of dal.subjectList" [value]="one.subjectId">
+                                {{one.subjectName}}
+                            </option>
+                        </select>
+                        <small *ngIf="questionSetError" id="emailHelp" class="form-text text-danger">*Please select
+                            question paper</small>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="form-group">
+                        <label for="fname">Difficulty level</label>
+
+                        <select [(ngModel)]="diffLevelForFilter" class="form-control">
+                            <option *ngFor="let one of filterData.difficultyLevel" [value]="one.difficultyLevel">
+                                {{one.difficultyLevel}}
+                            </option>
+                        </select>
+                        <small *ngIf="questionSetError" id="emailHelp" class="form-text text-danger">*Please select
+                            question paper </small>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="form-group">
+                        <label for="fname">Question type</label>
+
+                        <select [(ngModel)]="queTypeForFilter" class="form-control">
+                            <option *ngFor="let one of filterData.questionType" [value]="one.questionType">
+                                {{one.questionType}}
+                            </option>
+                        </select>
+                        <small *ngIf="questionSetError" id="emailHelp" class="form-text text-danger">*Please select
+                            question paper </small>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="form-group">
+                        <label for="fname">Total marks</label>
+
+                        <select [(ngModel)]="marksForFilter" class="form-control">
+                            <option *ngFor="let one of filterData.timeToSolve" [value]="one.timeToSolve">
+                                {{one.timeToSolve}}
+                            </option>
+                        </select>
+                        <small *ngIf="questionSetError" id="emailHelp" class="form-text text-danger">*Please select
+                            question paper </small>
+                    </div>
+                </div>
+            </div>
+
+
+        </div>
+        <!-- filter ends -->
+
+        <!-- question list starts -->
+        <div class="col-md-5" style="height:100%;overflow-y: scroll;">
+            <h3>Questions</h3>
+            <span><button type="button" class="btn-sm btn-primary" (click)="previousPage()">Previous
+                    page</button><button class="btn-sm btn-primary" type="button" (click)="nextPage()">Next
+                    page</button></span>
+            <!-- <pagination-controls (pageChange)="p = $event;pageChanged($event)"></pagination-controls> -->
+            <!-- <button style="float: right;" class="btn-primary btn-sm" type="button"
+                (click)="getSelectedQuestionIds()">Add
+                question</button> -->
+            <div class="row">
+
+                <h4 class="text-center p-4 m-5" *ngIf="!questionList?.length">No questions found</h4>
+                <!-- //| paginate: { itemsPerPage: 20, currentPage: p } -->
+                <div *ngFor="let one of filteredData || questionList" class="col-md-12 no-gutters bg-light m-4">
+                    <span> <input (change)="getSelectedQuestionIds()" type="checkbox" [(ngModel)]="one.isChecked"
+                            class="m-1"> <a (click)="getQuestionDetails(one)" class="stretched-link text-bold"
+                            role="button" style="cursor:pointer;"><b
+                                class="font-weight-bold">{{one.question}}</b></a></span>
+                    <p> Question Type : {{one.questionType}}</p>
+                    <p> Class : {{one.classInfo.className}}</p>
+                    <p> Subject : {{one.subjectInfo.subjectName}}</p>
+                    <p> Marks : {{one.maximumMarks}}</p>
+
+
+                </div>
+            </div>
+        </div>
+        <!-- question list ends -->
+
+        <!-- question update starts -->
+        <div class="col-md-5" style="height:100%;overflow-y: scroll;">
+            <h3>Question details <button class="btn-primary btn-sm" type="button" (click)="edit()">Edit</button></h3>
+
+            <form #updateForm="ngForm" (ngSubmit)="updateQuestion(questionDetailsById,updateForm.valid,updateForm)">
+                <div *ngIf="questionDetailsById" class="container">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="fname">Select Class</label>
+
+                                <select [(ngModel)]="questionDetailsById.classInfo.classId" [disabled]="isDisabled"
+                                    name="classId" #classId="ngModel" required class="form-control">
+                                    <option *ngFor="let one of dal.classList" [value]="one.classId">{{one.className}}
+                                    </option>
+                                </select>
+                                <small *ngIf="updateForm.submitted && classId.invalid" id="emailHelp"
+                                    class="form-text text-danger">*Please select class</small>
+
+
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="lname">Select Board</label>
+                                <select [(ngModel)]="questionDetailsById.boardInfo.boardId" [disabled]="isDisabled"
+                                    name="boardId" #boardId="ngModel" required class="form-control">
+                                    <option *ngFor="let one of dal.boardList" [value]="one.boardId">{{one.boardName}}
+                                    </option>
+                                </select>
+                                <small *ngIf="updateForm.submitted && boardId.invalid" id="emailHelp"
+                                    class="form-text text-danger">*Please select board</small>
+
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="fname">Select Subject</label>
+
+                                <select [(ngModel)]="questionDetailsById.subjectInfo.subjectId" [disabled]="isDisabled"
+                                    name="subjectId" #subjectId="ngModel" required class="form-control">
+                                    <option *ngFor="let one of dal.subjectList" [value]="one.subjectId">
+                                        {{one.subjectName}}</option>
+                                </select>
+                                <small *ngIf="updateForm.submitted && subjectId.invalid" id="emailHelp"
+                                    class="form-text text-danger">*Please select subject</small>
+
+
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="lname">Enter Topic</label>
+                                <input type="text" [(ngModel)]="questionDetailsById.topicName" [disabled]="isDisabled"
+                                    name="topicName" class="form-control" />
+
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <h4>Images: <span><input [disabled]="isDisabled" type="file" id="myFileInput" name="images"
+                                    [(ngModel)]="uploadFilePath" placeholder="Select image for upload"
+                                    (change)="getUploadData($event,questionDetailsById.questionId)" accept="image/*"
+                                    multiple /></span>
+                        </h4>
+
+                        <ng-container class="row" *ngIf="questionDetailsById && questionDetailsById.images">
+                            <div *ngFor="let one of questionDetailsById.images" class="col-md-4 p-4 ">
+                                <div class="card" style="width : 150px;">
+                                    <div class="card-body">
+                                        <img style="width : 100px;height: 100px;" [src]="one.imageurl">
+                                    </div>
+
+                                    <div class="card-footer"><button [disabled]="isDisabled" type="button"
+                                            (click)="deleteImageFromQuestion(one.imageId)">Delete</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </ng-container>
+
+
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <label for="lname">Select Question type</label>
+                            <select disabled [(ngModel)]="questionDetailsById.questionType" name="queType"
+                                #queType="ngModel" class="form-control">
+                                <option *ngFor="let one of questionType" [value]="one">{{one}}</option>
+                            </select>
+                            <small *ngIf="updateForm.submitted && queType.invalid" id="emailHelp"
+                                class="form-text text-danger">*Please select question type</small>
+                        </div>
+                        <div class="col-md-6">
+                            <label for="lname">Select Difficulty level</label>
+                            <select [disabled]="isDisabled" [(ngModel)]="questionDetailsById.difficultyLevel"
+                                name="difflevel" #difflevel="ngModel" required class="form-control">
+                                <option *ngFor="let one of difficultyLevel" [value]="one">{{one}}</option>
+                            </select>
+                            <small *ngIf="updateForm.submitted && difflevel.invalid" id="emailHelp"
+                                class="form-text text-danger">*Please select difficulty level</small>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                <label for="email">Question title</label>
+                                <textarea [disabled]="isDisabled" [(ngModel)]="questionDetailsById.question"
+                                    class="form-control" name="queTitle" #queTitle="ngModel" required
+                                    placeholder="Enter question title"></textarea>
+                                <small *ngIf="updateForm.submitted && queTitle.invalid" id="emailHelp"
+                                    class="form-text text-danger">*Please enter question title</small>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+
+                        <div class="col-xs-12 col-sm-8 col-md-3 col-lg-3">
+                            <label for="state">Time to solve</label>
+                            <input [disabled]="isDisabled" [(ngModel)]="questionDetailsById.timeToSolve" id="state"
+                                name="timeToSolve" #timeToSolve="ngModel" required class="form-control" type="number">
+                            <small *ngIf="updateForm.submitted && timeToSolve.invalid" id="emailHelp"
+                                class="form-text text-danger">*Please enter time to solve questions</small>
+                        </div>
+                        <div class="col-xs-12 col-sm-8 col-md-3 col-lg-3">
+                            <label for="state">Marks to allot</label>
+                            <input [disabled]="isDisabled" [(ngModel)]="questionDetailsById.maximumMarks" id="state"
+                                name="maxMarks" #maxMarks="ngModel" required class="form-control" type="number">
+                            <small *ngIf="updateForm.submitted && maxMarks.invalid" id="emailHelp"
+                                class="form-text text-danger">*Please enter marks</small>
+                        </div>
+                    </div>
+
+                    <hr>
+
+                    <h1>Answer</h1>
+                    <div *ngIf="questionDetailsById.questionType == 'mcq'">
+                        <h2>MCQ</h2>
+                        <table id="optionTable" class="table">
+                            <thead>
+                                <tr>
+                                    <th>
+                                        Option
+                                    </th>
+                                    <th>
+                                        Correct
+                                    </th>
+                                    <th>
+                                        Option text
+                                    </th>
+
+
+                                </tr>
+                            </thead>
+                            <tbody>
+
+                                <tr *ngFor="let one of questionDetailsById.options;let i=index;">
+                                    <td>{{i + 1}}</td>
+                                    <td>
+                                        <input [disabled]="isDisabled" [(ngModel)]="one.isCorrectAnswer"
+                                            name="optCorrect{{i}}" type="checkbox">
+                                    </td>
+                                    <td>
+                                        <input [disabled]="isDisabled" [(ngModel)]="one.optionName" name="optName{{i}}"
+                                            type="text">
+                                    </td>
+                                    <!-- <td *ngIf="options.length > 2">
+                                                                <button class="delete-row" (click)="removeRow(i)">Remove</button>
+                                                            </td> -->
+                                </tr>
+                            </tbody>
+
+                        </table>
+                        <!-- <button class="add-row" (click)="addRow()">Add row</button> -->
+                    </div>
+
+
+                    <div *ngIf="questionDetailsById.questionType == 'tof'">
+                        <h2>True or False</h2>
+                        <table id="optionTable" class="table">
+                            <thead>
+                                <tr>
+                                    <th>
+                                        Option
+                                    </th>
+                                    <th>
+                                        Correct
+                                    </th>
+                                    <th>
+                                        Option text
+                                    </th>
+
+
+                                </tr>
+                            </thead>
+                            <tbody>
+
+                                <tr *ngFor="let one of questionDetailsById.options;let i=index;">
+                                    <td>{{i + 1}}</td>
+                                    <td>
+                                        <input id="one" [disabled]="isDisabled" [(ngModel)]="one.isCorrectAnswer"
+                                            name="optCorrect{{i}}" type="checkbox">
+                                    </td>
+                                    <td>
+                                        <input id="two" [disabled]="isDisabled" [(ngModel)]="one.optionName"
+                                            name="optName{{i}}" type="text">
+                                    </td>
+                                    <!-- <td *ngIf="options.length > 2">
+                                                                <button class="delete-row" (click)="removeRow(i)">Remove</button>
+                                                            </td> -->
+                                </tr>
+                            </tbody>
+
+                        </table>
+
+                    </div>
+
+
+                    <div class="row">
+                        <button [disabled]="isDisabled" class="btn btn-primary form-control" name="submit"
+                            type="submit"> Update
+                            question</button>
+                    </div>
+
+
+                </div>
+            </form>
+        </div>
+        <!-- question update ends -->
+    </div>
+
+    <!-- <div class="row">
+        <div class="col-md-12">
+            <button class="btn btn-primary btn-sm" type="button" (click)="getSelectedQuestionIds()">Add
+                question</button>
+            <button class="btn btn-primary" (click)="saveQuestionSet(questionSetWithQuestions)">Add</button>
+        </div>
+    </div> -->
+
+</div>

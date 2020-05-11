@@ -1,0 +1,109 @@
+<!-- <div class="site-mobile-menu site-navbar-target">
+    <div class="site-mobile-menu-header">
+        <div class="site-mobile-menu-close mt-3">
+            <span class="icon-close2 js-menu-toggle"></span>
+        </div>
+    </div>
+    <div class="site-mobile-menu-body"></div>
+</div> -->
+
+
+<header class="site-navbar py-3 js-sticky-header site-navbar-target" style="background:#333131" role="banner">
+
+    <div class="container-fluid">
+
+        <!-- mobile nav starts -->
+        <div id="mySidenav" class="sidenav">
+            <a href="javascript:void(0)" class="closebtn" (click)="closeNav()">&times;</a>
+
+            <a style="color: white !important;" class="nav-link" [routerLink]="['home']" (click)="closeNav()">Home</a>
+            <a *ngIf="dal.userData.role == 'cc' || dal.userData.role == 'CC'" style="color: white !important;"
+                (click)="closeNav()" class="nav-link" [routerLink]="['test-bank']">Question paper
+                bank</a>
+
+            <a *ngIf="dal.userData.role == 'cc' || dal.userData.role == 'CC'" style="color: white !important;"
+                (click)="closeNav()" class="nav-link" [routerLink]="['question-bank']">Question bank</a>
+
+            <!-- <li><a style="color: white !important;" class="nav-link" [routerLink]="['create-test']">Create test</a></li> -->
+            <a *ngIf="dal.userData.role == 'cc' || dal.userData.role == 'CC'" style="color: white !important;"
+                class="nav-link" [routerLink]="['create-question']" (click)="closeNav()">Add
+                question</a>
+
+            <a *ngIf="dal.userData.role == 'cc' || dal.userData.role == 'CC'" style="color: white !important;"
+                class="nav-link" (click)="closeNav()" [routerLink]="['question-set']">Add
+                question paper</a>
+
+            <a *ngIf="dal.userData.role == 'cc' || dal.userData.role == 'CC'" style="color: white !important;"
+                class="nav-link" (click)="closeNav()" [routerLink]="['question-set-with-questions']">Add Questions to
+                paper</a>
+
+            <a *ngIf="dal.userData.role == 'cc' || dal.userData.role == 'CC'" style="color: white !important;"
+                (click)="closeNav()" class="nav-link" [routerLink]="['assign-students']">Assign paper</a>
+
+            <a *ngIf="dal.userData.role == 'student'" (click)="closeNav()" style="color: white !important;"
+                class="nav-link" [routerLink]="['student-questions']">My questions</a>
+
+            <!-- <a [routerLink]="['/']" (click)="closeNav()">Home</a>
+            <a [routerLink]="['/features']" (click)="closeNav()">Features</a>
+            <a [routerLink]="['home/courses']" (click)="closeNav()">Courses</a>
+            <a [routerLink]="['home/teachers']" (click)="closeNav()">Teachers</a>
+
+            <a href="javascript:void(0)"><i (click)="logout(); closeNav()" title="Log Out"
+                    class="fa fa-power-off nav-link" style="cursor: pointer; color: rgb(226, 225, 225) "
+                    aria-hidden="true"></i></a> -->
+        </div>
+        <!-- mobile nav ends -->
+
+        <div class="d-flex align-items-center">
+            <div class="site-logo"><a style="color: white !important;">LP-Test</a></div>
+
+            <div class="mx-auto text-center">
+                <nav *ngIf="dal.userData.isloggedin == 'true'" class="site-navigation position-relative text-right"
+                    role="navigation">
+                    <ul style="font-size: smaller;"
+                        class="site-menu main-menu js-clone-nav mx-auto d-none d-lg-block  m-0 p-0">
+                        <li><a style="color: white !important;" class="nav-link" [routerLink]="['home']">Home</a></li>
+                        <li *ngIf="dal.userData.role == 'cc' || dal.userData.role == 'CC'"><a
+                                style="color: white !important;" class="nav-link" [routerLink]="['create-question']">Add
+                                question</a></li>
+                        <li *ngIf="dal.userData.role == 'cc' || dal.userData.role == 'CC'"><a
+                                style="color: white !important;" class="nav-link"
+                                [routerLink]="['question-bank']">Question bank</a></li>
+                        <li *ngIf="dal.userData.role == 'cc' || dal.userData.role == 'CC'"><a
+                                style="color: white !important;" class="nav-link" [routerLink]="['question-set']">Add
+                                question paper</a></li>
+                        <li *ngIf="dal.userData.role == 'cc' || dal.userData.role == 'CC'"><a
+                                style="color: white !important;" class="nav-link" [routerLink]="['test-bank']">Question
+                                paper
+                                Library</a></li>
+
+                        <!-- <li><a style="color: white !important;" class="nav-link" [routerLink]="['create-test']">Create test</a></li> -->
+
+                        <!-- 
+                        <li *ngIf="dal.userData.role == 'cc'"><a style="color: white !important;" class="nav-link"
+                                [routerLink]="['question-set-with-questions']">Add Questions to paper</a></li> -->
+                        <li *ngIf="dal.userData.role == 'cc' || dal.userData.role == 'CC'"><a
+                                style="color: white !important;" class="nav-link"
+                                [routerLink]="['assign-students']">Assign paper to students</a></li>
+                        <li *ngIf="dal.userData.role == 'student'"><a style="color: white !important;" class="nav-link"
+                                [routerLink]="['student-questions']">My questions</a></li>
+                    </ul>
+                </nav>
+            </div>
+
+            <div class="">
+                <nav class="site-navigation position-relative text-right" role="navigation">
+                    <ul class="site-menu main-menu site-menu-dark js-clone-nav mr-auto d-none d-lg-block m-0 p-0">
+                        <li *ngIf="dal.userData.isloggedin == 'true'" class="cta"><a class="nav-link"
+                                (click)="logout()"><span>Logout</span></a></li>
+                    </ul>
+
+                </nav>
+                <a (click)="openNav()"
+                    class="d-inline-block d-lg-none site-menu-toggle js-menu-toggle text-black float-right"><span
+                        class="icon-menu h3"></span></a>
+            </div>
+        </div>
+    </div>
+
+</header>

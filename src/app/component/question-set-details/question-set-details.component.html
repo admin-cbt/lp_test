@@ -1,0 +1,71 @@
+<div class="site-section bg-dark">
+    <div class="container-fluid">
+        <div class="jumbotron">
+            <h1 class="m-3">Quesion paper details</h1>
+
+            <!-- question set meta data starts -->
+
+            <div class=" bg-light">
+                <div class="row">
+                    <div class="col-md-6">
+                        <h4 class="pl-2">Title : {{setMetaData.setName ? setMetaData.setName : "" }}</h4>
+                    </div>
+                    <div class="col-md-6">
+                        <h4 class="pl-2">Class : {{setMetaData.classInfo ? setMetaData.classInfo.className : "" }}
+                        </h4>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-6">
+                        <h4 class="pl-2">Conducted on : {{setMetaData.date ? setMetaData.date : "" }}</h4>
+                    </div>
+                    <div class="col-md-6">
+                        <h4 class="pl-2">Marks : {{setMetaData.totalMark ? setMetaData.totalMark : "" }} </h4>
+                    </div>
+                </div>
+                <div class="row">
+                    <!-- <div class="col-md-6">
+                        <h4 class="pl-2">Assigned to : {{setMetaData.assignedTo ? setMetaData.assignedTo : "" }}
+                            Students
+                        </h4>
+                    </div> -->
+                    <div class="col-md-6">
+                        <h4 class="pl-2">Time : {{setMetaData.paperTime ? setMetaData.paperTime : "" }} Minutes
+                        </h4>
+                    </div>
+                </div>
+            </div>
+            <!-- question set meta data ends -->
+
+            <!-- questions list starts -->
+            <div class="container-fluid p-3 mt-3">
+                <h3>Questions</h3>
+                <button class="btn-sm btn-primary" [routerLink]="['/question-set-with-questions', setId]">Add
+                    questions to paper</button>
+                <div class="">
+                    <div *ngFor="let one of setData;let i=index" class="card m-3 p-3">
+                        <div class="card-header">
+                            <h5 class="card-title">Q {{i + 1}}. &nbsp;{{one.questions.question}}<span><button
+                                        class="btn-sm btn-danger" style="float: right;"
+                                        (click)="removeQuestions(one)">Delete</button></span></h5>
+
+                        </div>
+                        <div class="card-body">
+                            <h5 class="card-title">Options</h5>
+                            <ol class="text-bold">
+                                <li *ngFor="let o of one.questions.options">
+                                    <p class="card-text" [className]="o.isCorrectAnswer ? 'correct' : 'wrong'">
+                                        {{o.optionName}}
+                                    </p>
+                                </li>
+                            </ol>
+
+                            <!-- <a href="#" class="btn btn-primary">Go somewhere</a> -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- questions list ends -->
+        </div>
+    </div>
+</div>
