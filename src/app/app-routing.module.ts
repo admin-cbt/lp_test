@@ -14,16 +14,16 @@ import { StudentQuestionsComponent } from './component/student-questions/student
 
 const routes: Routes = [
   { path: "", component: LandingComponent },
-  { path: "home", canActivate: [LoginAuthService], component: HomeComponent },
-  { path: "test-bank", canActivate: [LoginAuthService], component: TestBankComponent },
-  { path: "question-bank", canActivate: [LoginAuthService], component: QuestionBankComponent },
-  { path: "create-question", canActivate: [LoginAuthService], component: CreateQuestionComponent },
+  { path: "home",  component: HomeComponent },
+  { path: "test-bank",  component: TestBankComponent },
+  { path: "question-bank", component: QuestionBankComponent },
+  { path: "create-question", component: CreateQuestionComponent },
 
-  { path: "question-set", canActivate: [LoginAuthService], component: QuestionSetComponent },
-  { path: "question-set-with-questions/:id", canActivate: [LoginAuthService], component: QuestionSetWithQuestionComponent },
-  { path: "assign-students", canActivate: [LoginAuthService], component: AssignStudentComponent },
-  { path: "question-set-details/:id", canActivate: [LoginAuthService], component: QuestionSetDetailsComponent },
-  { path: "student-questions", canActivate: [LoginAuthService], component: StudentQuestionsComponent },
+  { path: "question-set",  component: QuestionSetComponent },
+  { path: "question-set-with-questions/:id",  component: QuestionSetWithQuestionComponent },
+  { path: "assign-students",  component: AssignStudentComponent },
+  { path: "question-set-details/:id", component: QuestionSetDetailsComponent },
+  { path: "student-questions",  component: StudentQuestionsComponent },
 ];
 
 @NgModule({
